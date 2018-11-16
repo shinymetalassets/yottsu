@@ -1,0 +1,35 @@
+{
+  "name": "yottsu",
+  "version": "0.1.0",
+  "description": "4つのブロック - a block game",
+  "main": "lib/index.js",
+  "files": [
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+  ],
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "build:example": "npm run build && cd example && webpack",
+    "clean": "rimraf lib && rimraf example/dist && rimraf example/lib",
+    "docs": "typedoc src --out docs",
+    "prepublish": "npm run build",
+    "watch": "npm run clean && tsc --watch",
+    "watch:example": "npm run build && cd example && webpack --watch"
+  },
+  "author": "Afshin Darian",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^0.28.10",
+    "rimraf": "^2.6.2",
+    "style-loader": "^0.20.3",
+    "ts-loader": "^4.0.1",
+    "typedoc": "^0.11.1",
+    "typescript": "^2.7.2",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "@phosphor/datagrid": "^0.1.5",
+    "@phosphor/widgets": "^1.5.0"
+  }
+}
