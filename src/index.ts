@@ -74,21 +74,26 @@ namespace Life {
      * Start ticking the life widget, rendering each generation.
      */
     start(): void {
-      let swap = false;
-
       if (this._started) {
         this.stop();
       }
 
-      this._started = window.setInterval(() => {
-        // Use a pointer to swap lists back so their names make semantic sense.
-        if (swap = !swap) {
-          let swapped = this._data;
-          this._data = this._swap;
-          this._swap = swapped;
+      this._started = true;
+      this._last = new Date().getTime();
+
+      const tick = () => {
+        if (!this._started) {
+          return;
         }
 
-        this._tick(this._swap, this._data);
+        const current = new Date().getTime();
+
+        if (current - this._last < this._interval) {
+          return window.requestAnimationFrame(tick);
+        }
+
+        this._tick(this._data, this._swap);
+        [this._data, this._swap] = [this._swap, this._data];
         this.emitChanged({
           type: 'cells-changed',
           rowSpan: this._data.length,
@@ -97,23 +102,26 @@ namespace Life {
           rowIndex: 0,
           columnIndex: 0
         });
-      }, this._interval);
+        this._last = current;
+
+        return window.requestAnimationFrame(tick);
+      };
+
+      window.requestAnimationFrame(tick);
     }
 
     /**
      * Stop ticking the life widget.
      */
     stop(): void {
-      if (this._started) {
-        window.clearInterval(this._started);
-        this._started = 0;
-      }
+      this._started = false;
     }
 
     private _interval: number;
     private _data: Model.Bit[][];
+    private _last = -Infinity;
     private _swap: Model.Bit[][];
-    private _started: number;
+    private _started = false;
     private _tick: Model.Tick;
   }
 

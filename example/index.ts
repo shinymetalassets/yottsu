@@ -11,7 +11,7 @@ window.addEventListener('load', function () {
   const main = document.querySelector('main') as HTMLElement;
   const model = (window as any).model = new Life.Model({
     initial: Life.Model.random(50, 100),
-    interval: 50
+    interval: Math.floor(1000 / 60)
   });
   const grid = Life.create(model, { size: 10 });
 
